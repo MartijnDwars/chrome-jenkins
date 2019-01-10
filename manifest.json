@@ -1,0 +1,23 @@
+{
+  "name": "Chrome Jenkins",
+  "version": "1.0",
+  "description": "Add buttons to filter pipeline steps.",
+  "background": {
+    "scripts": [
+      "jquery.min.js"
+    ],
+    "persistent": false
+  },
+ "content_scripts": [{
+    "matches": ["http://pgx-ci.us.oracle.com/*"],
+    "js": [
+      "jquery.min.js",
+      "inject.js"
+    ],
+    "run_at": "document_start"
+  }],
+  "permissions": [
+    "activeTab"
+  ],
+  "manifest_version": 2
+}
