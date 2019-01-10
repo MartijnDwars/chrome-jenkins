@@ -1,5 +1,7 @@
 jQuery.noConflict();
 
+var NEIGHBORHOOD = 8;
+
 jQuery(window).load(function () {
   var disableReload = function () {
     for (var i = 1; i < 99999; i++) {
@@ -13,21 +15,43 @@ jQuery(window).load(function () {
     }, 100);
   };
 
+  var isSuccess = function (row) {
+    var $row = jQuery(row);
+    var $status = jQuery($row.find('td:last'));
+
+    return $status.find('img').attr('tooltip') == 'Success';
+  };
+
   var hideSuccess = function () {
     disableReload();
 
     var table = jQuery('table.pane.bigtable')
     var rows = jQuery(table).find('tr')
 
-    rows.each(function (index, row) {
-      var $row = jQuery(row);
-      var $status = jQuery($row.find('td:last'));
+    var flags = rows.map(function (index, row) {
+      return isSuccess(row);
+    }).toArray();
 
-      if ($status.find('img').attr('tooltip') == 'Success') {
-        console.log('Row ' + index + ' is success.');
-        $row.hide();
-      } else {
-        console.log('Row ' + index + ' is not success.');
+    // Get the non-successful indices
+    var nonSuccessful = [];
+    for (var i = 0; i < flags.length; i++) {
+      if (!flags[i]) {
+        nonSuccessful.push(i);
+      }
+    }
+
+    // Update the neighborhood
+    for (var i = 0; i < nonSuccessful.length; i++) {
+      var flagIndex = nonSuccessful[i];
+
+      for (var j = flagIndex - NEIGHBORHOOD; j < flagIndex + NEIGHBORHOOD; j++) {
+        flags[j] = false;
+      }
+    }
+
+    rows.each(function (index, row) {
+      if (flags[index]) {
+        jQuery(rows[index]).hide();
       }
     });
   };
