@@ -9,7 +9,10 @@
     "persistent": false
   },
  "content_scripts": [{
-    "matches": ["http://pgx-ci.us.oracle.com/*"],
+    "matches": [
+      "http://pgx-ci.us.oracle.com/*",
+      "http://pgx-ci.us.oracle.com:8080/*"
+    ],
     "js": [
       "jquery.min.js",
       "inject.js"

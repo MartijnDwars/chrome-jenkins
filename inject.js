@@ -41,6 +41,7 @@ jQuery(window).load(function () {
     }
 
     // Update the neighborhood
+    var n = 0;
     for (var i = 0; i < nonSuccessful.length; i++) {
       var flagIndex = nonSuccessful[i];
 
@@ -52,8 +53,11 @@ jQuery(window).load(function () {
     rows.each(function (index, row) {
       if (flags[index]) {
         jQuery(rows[index]).hide();
+        n++;
       }
     });
+
+    alert('Hid '+n+' rows!');
   };
 
   var $hideSuccessBtn = jQuery('<button>Hide success</button>');
